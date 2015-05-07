@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="java" deleted="false" description="cast_resolve" enabled="true" name="cast_resolve">${imp:import(com.jerry.zkconfigutil.resolve.AbstractResolve)}&#13;
+${cursor}&#13;
+&#13;
+public static final class ${enclosing_type}${word_selection}Resolve extends AbstractResolve{&#13;
+&#13;
+		@Override&#13;
+		public String resolve() {&#13;
+			// TODO Auto-generated method stub&#13;
+			return ${enclosing_type}.${word_selection}.toString();&#13;
+		}&#13;
+&#13;
+		@Override&#13;
+		public void dResolve(String src) {&#13;
+			// TODO Auto-generated method stub&#13;
+			${enclosing_type}.${word_selection} = ${enclosing_type}.${word_selection}.getClass().cast(src);&#13;
+		}&#13;
+		&#13;
+	}&#13;
+&#13;
+</template></templates>
