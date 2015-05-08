@@ -6,8 +6,10 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
 /**
  * annotation target class
+ * 
  * @author jerry
  *
  */
@@ -16,20 +18,4 @@ import java.lang.annotation.Target;
 @Documented
 @Inherited
 public @interface TypeZkConfigurable {
-	/**
-	 * base path on zookeeper
-	 * @return
-	 */
-	@Deprecated
-	String path() default "";
-	/**
-	 * if use this zookeeper server default false
-	 * @return
-	 */
-	boolean useOwnZkServer() default false;
-	/**
-	 * own zookeeper server default ""
-	 * @return
-	 */
-	String server() default "";
 }

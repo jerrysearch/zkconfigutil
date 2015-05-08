@@ -8,8 +8,10 @@ import java.lang.annotation.Target;
 
 import com.jerry.zkconfigutil.resolve.AbstractResolve;
 import com.jerry.zkconfigutil.resolve.ReflectResolve;
+
 /**
  * annotation target field
+ * 
  * @author jerry
  *
  */
@@ -18,25 +20,11 @@ import com.jerry.zkconfigutil.resolve.ReflectResolve;
 @Documented
 public @interface FieldZkConfigurable {
 	/**
-	 * path on zookeeper default ""
-	 * @return
-	 */
-	String path() default "";
-
-	/**
 	 * is need dynamic update by zookeeper default false
+	 * 
 	 * @return
 	 */
 	boolean dynamicUpdate() default false;
-	
+
 	Class<? extends AbstractResolve> resolve() default ReflectResolve.class;
-	
-	/**
-	 * useless
-	 * @return
-	 * 
-	 * @deprecated
-	 */
-	@Deprecated()
-	String defaultValue() default "";
 }

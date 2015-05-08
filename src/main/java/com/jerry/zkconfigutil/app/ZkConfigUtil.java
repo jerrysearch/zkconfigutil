@@ -47,30 +47,16 @@ public final class ZkConfigUtil implements IZkDataListener {
 		if (!cla.isAnnotationPresent(TypeZkConfigurable.class)) {
 			throw new NotRegistedException();
 		}
-		TypeZkConfigurable typeZkConfigurable = cla
-				.getAnnotation(TypeZkConfigurable.class);
-
-		boolean useOwnZkServer = typeZkConfigurable.useOwnZkServer();
-
 		final ZkClient zkClient;
-		if (useOwnZkServer) {
-			final String server = typeZkConfigurable.server();
-			if ("".equals(server)) {
-				logger.error("please set zkServer or set typeZkConfigurable.useOwnZkServer()=true to use globalZkServer system will exit!!!");
-				System.exit(0);
-			}
-			zkClient = this.makeZkClient(server);
-		} else {
-			if ("".equals(this.globalZkServer)) {
-				logger.error("please set globalZkServer or set typeZkConfigurable.useOwnZkServer()=false to use own zkserver system will exit!!!");
-				System.exit(0);
-			}
-			zkClient = this.makeZkClient(this.globalZkServer);
+		if ("".equals(this.globalZkServer)) {
+			logger.error("please set globalZkServer or set typeZkConfigurable.useOwnZkServer()=false to use own zkserver system will exit!!!");
+			System.exit(0);
 		}
-		String packagePath = cla.getPackage().getName();
-		packagePath = packagePath.replaceAll("\\.", "/");
-
-		rootPath = this.makeZkPath(rootPath, packagePath);
+		zkClient = this.makeZkClient(this.globalZkServer);
+		// String packagePath = cla.getPackage().getName();
+		// packagePath = packagePath.replaceAll("\\.", "/");
+		//
+		// rootPath = this.makeZkPath(rootPath, packagePath);
 		String path = this.makeZkPath(rootPath, cla.getName());
 
 		path = path.replace("$", "/"); // inclass
@@ -85,12 +71,7 @@ public final class ZkConfigUtil implements IZkDataListener {
 			FieldZkConfigurable fieldZkConfigurable = field
 					.getAnnotation(FieldZkConfigurable.class);
 
-			final String fieldPath;
-			if (fieldZkConfigurable.path().equals("")) {
-				fieldPath = this.makeZkPath(path, field.getName());
-			} else {
-				fieldPath = this.makeZkPath(path, fieldZkConfigurable.path());
-			}
+			final String fieldPath = this.makeZkPath(path, field.getName());
 
 			String value = zkClient.readData(fieldPath, true);
 			logger.debug(fieldPath + " : " + value);
