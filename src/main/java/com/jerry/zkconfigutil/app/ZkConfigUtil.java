@@ -9,7 +9,6 @@ import org.I0Itec.zkclient.ZkClient;
 import org.apache.log4j.Logger;
 
 import com.jerry.zkconfigutil.annotation.FieldZkConfigurable;
-import com.jerry.zkconfigutil.annotation.TypeZkConfigurable;
 import com.jerry.zkconfigutil.exception.NotRegistedException;
 import com.jerry.zkconfigutil.help.SignalHelper;
 import com.jerry.zkconfigutil.resolve.AbstractResolve;
@@ -44,9 +43,9 @@ public final class ZkConfigUtil implements IZkDataListener {
 			boolean isCreateIfNUll, String rootPath)
 			throws NotRegistedException, InstantiationException,
 			IllegalAccessException {
-		if (!cla.isAnnotationPresent(TypeZkConfigurable.class)) {
-			throw new NotRegistedException();
-		}
+		// if (!cla.isAnnotationPresent(TypeZkConfigurable.class)) {
+		// throw new NotRegistedException();
+		// }
 		final ZkClient zkClient;
 		if ("".equals(this.globalZkServer)) {
 			logger.error("please set globalZkServer or set typeZkConfigurable.useOwnZkServer()=false to use own zkserver system will exit!!!");
