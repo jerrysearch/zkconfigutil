@@ -6,7 +6,8 @@ import java.util.Map;
 
 import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.ZkClient;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jerry.zkconfigutil.annotation.FieldZkConfigurable;
 import com.jerry.zkconfigutil.exception.NotRegistedException;
@@ -19,7 +20,7 @@ import com.jerry.zkconfigutil.zkserializer.StringZkSerializer;
 
 public final class ZkConfigUtil implements IZkDataListener {
 
-	private final Logger logger = Logger.getLogger(ZkConfigUtil.class);
+	private final Logger logger = LoggerFactory.getLogger(ZkConfigUtil.class);
 	private final String globalZkServer;
 	private final String globalPath;
 
@@ -65,7 +66,7 @@ public final class ZkConfigUtil implements IZkDataListener {
 		for (Field field : fields) {
 			if (!field.isAnnotationPresent(FieldZkConfigurable.class))
 				continue;
-			logger.debug("field : " + field.getName() + "   type : "
+			logger.info("field : " + field.getName() + "   type : "
 					+ field.getType().getSimpleName());
 			FieldZkConfigurable fieldZkConfigurable = field
 					.getAnnotation(FieldZkConfigurable.class);
@@ -73,7 +74,7 @@ public final class ZkConfigUtil implements IZkDataListener {
 			final String fieldPath = this.makeZkPath(path, field.getName());
 
 			String value = zkClient.readData(fieldPath, true);
-			logger.debug(fieldPath + " : " + value);
+			logger.info(fieldPath + " : " + value);
 
 			Class<? extends AbstractResolve> resolve = fieldZkConfigurable
 					.resolve();
@@ -107,7 +108,7 @@ public final class ZkConfigUtil implements IZkDataListener {
 					fieldZkConfigurable.dynamicUpdate());
 
 			if (fieldZkConfigurable.dynamicUpdate()) {
-				logger.debug("dynamicUpdate " + fieldPath);
+				logger.info("dynamicUpdate " + fieldPath);
 				zkClient.subscribeDataChanges(fieldPath, this);
 				Updater.register(fieldPath, resolveInstance);
 			}
